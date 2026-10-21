@@ -1,27 +1,37 @@
 {
   "manifest_version": 3,
-  "name": "Autopop - Depop Follow Manager",
-  "version": "1.0",
-  "description": "Manage Depop follows and unfollows with automation",
+  "name": "Handshake Quick Apply",
+  "version": "0.2.0",
+  "description": "Inspect Handshake postings and apply only to resume-only in-platform applications.",
   "permissions": [
     "activeTab",
+    "storage",
     "scripting",
-    "tabs"
+    "notifications"
   ],
   "host_permissions": [
-    "*://*.depop.com/*"
+    "https://*.joinhandshake.com/*"
   ],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "src/popup/popup.html"
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.js"
   },
   "content_scripts": [
     {
-      "matches": ["*://*.depop.com/*"],
-      "js": ["content.js"],
-      "run_at": "document_end"
+      "matches": ["https://*.joinhandshake.com/*"],
+      "js": [
+        "src/config/selectors.js",
+        "src/content/dom-utils.js",
+        "src/content/classifier.js",
+        "src/content/runner.js",
+        "src/content/content.js"
+      ],
+      "run_at": "document_idle"
     }
   ],
   "icons": {
     "128": "icon.png"
   }
-} 
+}
